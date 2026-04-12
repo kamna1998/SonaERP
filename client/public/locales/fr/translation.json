@@ -1,0 +1,79 @@
+{
+  "app": {
+    "title": "SonaERP v5.0",
+    "subtitle": "Gestion des Marchés et Contrats"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "loginTitle": "Connexion à SonaERP",
+    "loginSubtitle": "Plateforme Numérique de Passation des Marchés",
+    "emailPlaceholder": "nom@sonatrach.dz",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "invalidCredentials": "Email ou mot de passe invalide",
+    "accountLocked": "Compte verrouillé. Veuillez réessayer plus tard.",
+    "changePassword": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "projects": "Projets",
+    "dtao": "Dossiers d'Appel d'Offres",
+    "bids": "Soumissions",
+    "ccc": "Commission (CCC)",
+    "contracts": "Contrats",
+    "avenants": "Avenants",
+    "users": "Gestion des utilisateurs",
+    "roles": "Rôles & Permissions",
+    "audit": "Journal d'audit",
+    "settings": "Paramètres"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "search": "Rechercher...",
+    "loading": "Chargement...",
+    "noData": "Aucune donnée disponible",
+    "actions": "Actions",
+    "status": "Statut",
+    "date": "Date",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "page": "Page",
+    "of": "sur",
+    "total": "Total",
+    "export": "Exporter",
+    "filter": "Filtrer"
+  },
+  "users": {
+    "title": "Gestion des utilisateurs",
+    "createUser": "Créer un utilisateur",
+    "employeeId": "Matricule",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "department": "Département",
+    "role": "Rôle",
+    "status": "Statut",
+    "lastLogin": "Dernière connexion",
+    "active": "Actif",
+    "suspended": "Suspendu",
+    "deactivated": "Désactivé"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "activeProjects": "Projets actifs",
+    "pendingApprovals": "Approbations en attente",
+    "openTenders": "Appels d'offres ouverts",
+    "activeContracts": "Contrats actifs"
+  }
+}

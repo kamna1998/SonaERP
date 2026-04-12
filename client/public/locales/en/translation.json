@@ -1,0 +1,79 @@
+{
+  "app": {
+    "title": "SonaERP v5.0",
+    "subtitle": "Procurement & Contract Management"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "loginTitle": "Sign in to SonaERP",
+    "loginSubtitle": "Sonatrach Digital Procurement Platform",
+    "emailPlaceholder": "name@sonatrach.dz",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "invalidCredentials": "Invalid email or password",
+    "accountLocked": "Account is locked. Please try again later.",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "dtao": "Tender Documents",
+    "bids": "Bids",
+    "ccc": "Commission (CCC)",
+    "contracts": "Contracts",
+    "avenants": "Amendments",
+    "users": "User Management",
+    "roles": "Roles & Permissions",
+    "audit": "Audit Trail",
+    "settings": "Settings"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search...",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of",
+    "total": "Total",
+    "export": "Export",
+    "filter": "Filter"
+  },
+  "users": {
+    "title": "User Management",
+    "createUser": "Create User",
+    "employeeId": "Employee ID",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "department": "Department",
+    "role": "Role",
+    "status": "Status",
+    "lastLogin": "Last Login",
+    "active": "Active",
+    "suspended": "Suspended",
+    "deactivated": "Deactivated"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "activeProjects": "Active Projects",
+    "pendingApprovals": "Pending Approvals",
+    "openTenders": "Open Tenders",
+    "activeContracts": "Active Contracts"
+  }
+}

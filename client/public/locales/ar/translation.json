@@ -1,0 +1,79 @@
+{
+  "app": {
+    "title": "SonaERP الإصدار 5.0",
+    "subtitle": "منصة إدارة الصفقات والعقود"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "loginTitle": "الدخول إلى SonaERP",
+    "loginSubtitle": "المنصة الرقمية لتسيير الصفقات",
+    "emailPlaceholder": "الاسم@sonatrach.dz",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "accountLocked": "الحساب مقفل. يرجى المحاولة لاحقاً.",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "projects": "المشاريع",
+    "dtao": "ملفات المناقصات",
+    "bids": "العروض",
+    "ccc": "لجنة مراقبة الصفقات",
+    "contracts": "العقود",
+    "avenants": "الملاحق",
+    "users": "إدارة المستخدمين",
+    "roles": "الأدوار والصلاحيات",
+    "audit": "سجل التدقيق",
+    "settings": "الإعدادات"
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "search": "بحث...",
+    "loading": "جاري التحميل...",
+    "noData": "لا توجد بيانات",
+    "actions": "الإجراءات",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "confirm": "تأكيد",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "page": "صفحة",
+    "of": "من",
+    "total": "المجموع",
+    "export": "تصدير",
+    "filter": "تصفية"
+  },
+  "users": {
+    "title": "إدارة المستخدمين",
+    "createUser": "إنشاء مستخدم",
+    "employeeId": "رقم الموظف",
+    "firstName": "الاسم",
+    "lastName": "اللقب",
+    "department": "القسم",
+    "role": "الدور",
+    "status": "الحالة",
+    "lastLogin": "آخر دخول",
+    "active": "نشط",
+    "suspended": "موقوف",
+    "deactivated": "معطل"
+  },
+  "dashboard": {
+    "welcome": "مرحباً",
+    "activeProjects": "المشاريع النشطة",
+    "pendingApprovals": "الموافقات المعلقة",
+    "openTenders": "المناقصات المفتوحة",
+    "activeContracts": "العقود النشطة"
+  }
+}
