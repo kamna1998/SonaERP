@@ -4,6 +4,9 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import UserList from './pages/users/UserList';
+import ProjectList from './pages/projects/ProjectList';
+import ProjectForm from './pages/projects/ProjectForm';
+import ProjectDetail from './pages/projects/ProjectDetail';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -19,8 +22,11 @@ export default function App() {
       >
         <Route index element={<Dashboard />} />
         <Route path="users" element={<UserList />} />
+        {/* Phase 2: Projects / Plan de Passation */}
+        <Route path="projects" element={<ProjectList />} />
+        <Route path="projects/new" element={<ProjectForm />} />
+        <Route path="projects/:id" element={<ProjectDetail />} />
         {/* Future phase routes - placeholders */}
-        <Route path="projects" element={<PlaceholderPage title="Projects" />} />
         <Route path="dtao" element={<PlaceholderPage title="DTAO" />} />
         <Route path="bids" element={<PlaceholderPage title="Bids" />} />
         <Route path="ccc" element={<PlaceholderPage title="CCC" />} />

@@ -14,6 +14,7 @@ import authRoutes from './modules/auth/auth.routes';
 import usersRoutes from './modules/users/users.routes';
 import rolesRoutes from './modules/roles/roles.routes';
 import auditRoutes from './modules/audit/audit.routes';
+import projectsRoutes from './modules/projects/projects.routes';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/roles', rolesRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/projects', projectsRoutes);
 
 // Error handler (must be last)
 app.use(errorHandler);
