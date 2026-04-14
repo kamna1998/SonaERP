@@ -16,6 +16,8 @@ import rolesRoutes from './modules/roles/roles.routes';
 import auditRoutes from './modules/audit/audit.routes';
 import projectsRoutes from './modules/projects/projects.routes';
 import dtaoRoutes from './modules/dtao/dtao.routes';
+import suppliersRoutes from './modules/suppliers/suppliers.routes';
+import bidsRoutes from './modules/bids/bids.routes';
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.use('/api/roles', rolesRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/dtao', dtaoRoutes);
+app.use('/api/suppliers', suppliersRoutes);
+app.use('/api/bids', bidsRoutes);
 
 // Error handler (must be last)
 app.use(errorHandler);

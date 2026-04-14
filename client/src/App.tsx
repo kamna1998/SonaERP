@@ -9,6 +9,10 @@ import ProjectForm from './pages/projects/ProjectForm';
 import ProjectDetail from './pages/projects/ProjectDetail';
 import DtaoList from './pages/dtao/DtaoList';
 import DtaoDetail from './pages/dtao/DtaoDetail';
+import SupplierList from './pages/suppliers/SupplierList';
+import BidList from './pages/bids/BidList';
+import BidReceptionForm from './pages/bids/BidReceptionForm';
+import BidDetail from './pages/bids/BidDetail';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -31,8 +35,12 @@ export default function App() {
         {/* Phase 3: DTAO / Tender Dossiers */}
         <Route path="dtao" element={<DtaoList />} />
         <Route path="dtao/:id" element={<DtaoDetail />} />
+        {/* Phase 4: Suppliers & Bid Reception */}
+        <Route path="suppliers" element={<SupplierList />} />
+        <Route path="bids" element={<BidList />} />
+        <Route path="bids/new" element={<BidReceptionForm />} />
+        <Route path="bids/:id" element={<BidDetail />} />
         {/* Future phase routes - placeholders */}
-        <Route path="bids" element={<PlaceholderPage title="Bids" />} />
         <Route path="ccc" element={<PlaceholderPage title="CCC" />} />
         <Route path="contracts" element={<PlaceholderPage title="Contracts" />} />
         <Route path="avenants" element={<PlaceholderPage title="Avenants" />} />
