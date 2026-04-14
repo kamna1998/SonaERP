@@ -7,6 +7,8 @@ import UserList from './pages/users/UserList';
 import ProjectList from './pages/projects/ProjectList';
 import ProjectForm from './pages/projects/ProjectForm';
 import ProjectDetail from './pages/projects/ProjectDetail';
+import DtaoList from './pages/dtao/DtaoList';
+import DtaoDetail from './pages/dtao/DtaoDetail';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -26,8 +28,10 @@ export default function App() {
         <Route path="projects" element={<ProjectList />} />
         <Route path="projects/new" element={<ProjectForm />} />
         <Route path="projects/:id" element={<ProjectDetail />} />
+        {/* Phase 3: DTAO / Tender Dossiers */}
+        <Route path="dtao" element={<DtaoList />} />
+        <Route path="dtao/:id" element={<DtaoDetail />} />
         {/* Future phase routes - placeholders */}
-        <Route path="dtao" element={<PlaceholderPage title="DTAO" />} />
         <Route path="bids" element={<PlaceholderPage title="Bids" />} />
         <Route path="ccc" element={<PlaceholderPage title="CCC" />} />
         <Route path="contracts" element={<PlaceholderPage title="Contracts" />} />

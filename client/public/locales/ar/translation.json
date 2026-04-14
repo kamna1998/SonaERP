@@ -53,7 +53,8 @@
     "of": "من",
     "total": "المجموع",
     "export": "تصدير",
-    "filter": "تصفية"
+    "filter": "تصفية",
+    "optional": "اختياري"
   },
   "users": {
     "title": "إدارة المستخدمين",
@@ -177,6 +178,64 @@
       "aboveThreshold": "تتجاوز العتبة الوطنية",
       "requiresCCC": "تتطلب موافقة لجنة مراقبة الصفقات",
       "minBids": "الحد الأدنى من العروض المطلوبة"
+    }
+  },
+  "dtao": {
+    "title": "ملفات طلب العروض (DTAO)",
+    "subtitle": "إعداد وإدارة صارمة لكراسات الشروط مع الفصل التقني/التجاري",
+    "reference": "مرجع DTAO",
+    "project": "المشروع",
+    "version": "الإصدار",
+    "docCount": "الوثائق",
+    "dtaosCount": "ملفات",
+    "allStatuses": "جميع الحالات",
+    "searchPlaceholder": "ابحث عن ملف DTAO...",
+    "vaultNotice": "الوصول إلى الخزنة مُقيَّد — فصل تقني وتجاري",
+    "specHash": "البصمة SHA-256",
+    "readinessWarning": "يجب ختم جميع الوثائق المطلوبة قبل الموافقة.",
+    "checklist": "قائمة التحقق من الوثائق",
+    "noDocuments": "لا توجد وثائق في هذه الخزنة",
+    "addDocument": "إضافة وثيقة",
+    "documentType": "نوع الوثيقة",
+    "docTitle": "عنوان الوثيقة",
+    "docTitlePlaceholder": "مثال: كراس الشروط — الصفقة XYZ",
+    "uploadVersion": "رفع إصدار",
+    "newVersion": "إصدار جديد",
+    "upload": "رفع",
+    "fileName": "اسم الملف",
+    "content": "المحتوى",
+    "contentPlaceholder": "الصق المحتوى النصي أو base64...",
+    "sealOnUpload": "ختم فور الرفع",
+    "seal": "ختم",
+    "statusHistory": "سجل التحولات",
+    "transition": "التحول",
+    "reason": "السبب",
+    "reasonPlaceholder": "أدخل سبب التحول...",
+    "confirmTransition": "تأكيد تغيير الحالة",
+    "transitionTo": "الانتقال إلى:",
+    "statuses": {
+      "DRAFT": "مسودة",
+      "UNDER_REVIEW": "قيد المراجعة",
+      "APPROVED": "معتمد",
+      "PUBLISHED": "منشور",
+      "AMENDED": "معدَّل",
+      "CANCELLED": "ملغى"
+    },
+    "vaults": {
+      "TECHNICAL": "الخزنة التقنية",
+      "COMMERCIAL": "الخزنة التجارية"
+    },
+    "docTypes": {
+      "CAHIER_DES_CHARGES": "كراس الشروط",
+      "REGLEMENT_CONSULTATION": "لائحة الاستشارة",
+      "CAHIER_PRESCRIPTIONS_TECHNIQUES": "كراس المواصفات التقنية",
+      "BORDEREAU_PRIX": "جدول الأسعار",
+      "LETTRE_SOUMISSION": "رسالة العرض",
+      "DECLARATION_PROBITE": "إقرار النزاهة",
+      "DECLARATION_CANDIDATURE": "إقرار الترشح",
+      "CAUTION_SOUMISSION": "كفالة العرض",
+      "MODELE_CONTRAT": "نموذج العقد",
+      "AUTRES": "وثائق أخرى"
     }
   }
 }

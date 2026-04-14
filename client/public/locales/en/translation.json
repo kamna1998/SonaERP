@@ -53,7 +53,8 @@
     "of": "of",
     "total": "Total",
     "export": "Export",
-    "filter": "Filter"
+    "filter": "Filter",
+    "optional": "optional"
   },
   "users": {
     "title": "User Management",
@@ -177,6 +178,64 @@
       "aboveThreshold": "Above national threshold",
       "requiresCCC": "Requires CCC approval",
       "minBids": "Min. required bids"
+    }
+  },
+  "dtao": {
+    "title": "Tender Dossiers (DTAO)",
+    "subtitle": "Preparation and strict management of tender specifications with technical/commercial segregation",
+    "reference": "DTAO Reference",
+    "project": "Project",
+    "version": "Version",
+    "docCount": "Documents",
+    "dtaosCount": "dossiers",
+    "allStatuses": "All statuses",
+    "searchPlaceholder": "Search a DTAO...",
+    "vaultNotice": "Vault access controlled — technical and commercial separated",
+    "specHash": "SHA-256 fingerprint",
+    "readinessWarning": "All required documents must be sealed before approval.",
+    "checklist": "Document checklist",
+    "noDocuments": "No documents in this vault",
+    "addDocument": "Add a document",
+    "documentType": "Document type",
+    "docTitle": "Document title",
+    "docTitlePlaceholder": "Ex. Statement of Work — Contract XYZ",
+    "uploadVersion": "Upload a version",
+    "newVersion": "New version",
+    "upload": "Upload",
+    "fileName": "File name",
+    "content": "Content",
+    "contentPlaceholder": "Paste document text content or base64...",
+    "sealOnUpload": "Seal immediately after upload",
+    "seal": "Seal",
+    "statusHistory": "Transition history",
+    "transition": "Transition",
+    "reason": "Reason",
+    "reasonPlaceholder": "Provide a reason for the transition...",
+    "confirmTransition": "Confirm status change",
+    "transitionTo": "Transition to:",
+    "statuses": {
+      "DRAFT": "Draft",
+      "UNDER_REVIEW": "Under review",
+      "APPROVED": "Approved",
+      "PUBLISHED": "Published",
+      "AMENDED": "Amended",
+      "CANCELLED": "Cancelled"
+    },
+    "vaults": {
+      "TECHNICAL": "Technical vault",
+      "COMMERCIAL": "Commercial vault"
+    },
+    "docTypes": {
+      "CAHIER_DES_CHARGES": "Statement of Work",
+      "REGLEMENT_CONSULTATION": "Tender Rules",
+      "CAHIER_PRESCRIPTIONS_TECHNIQUES": "Technical Specifications",
+      "BORDEREAU_PRIX": "Price Schedule",
+      "LETTRE_SOUMISSION": "Submission Letter",
+      "DECLARATION_PROBITE": "Probity Declaration",
+      "DECLARATION_CANDIDATURE": "Candidacy Declaration",
+      "CAUTION_SOUMISSION": "Bid Bond",
+      "MODELE_CONTRAT": "Contract Template",
+      "AUTRES": "Other documents"
     }
   }
 }

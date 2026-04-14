@@ -53,7 +53,8 @@
     "of": "sur",
     "total": "Total",
     "export": "Exporter",
-    "filter": "Filtrer"
+    "filter": "Filtrer",
+    "optional": "optionnel"
   },
   "users": {
     "title": "Gestion des utilisateurs",
@@ -177,6 +178,64 @@
       "aboveThreshold": "Dépasse le seuil national",
       "requiresCCC": "Requiert l'approbation CCC",
       "minBids": "Soumissions min. requises"
+    }
+  },
+  "dtao": {
+    "title": "Dossiers d'Appel d'Offres (DTAO)",
+    "subtitle": "Préparation et gestion stricte des cahiers des charges avec séparation technique/commerciale",
+    "reference": "Référence DTAO",
+    "project": "Projet",
+    "version": "Version",
+    "docCount": "Documents",
+    "dtaosCount": "dossiers",
+    "allStatuses": "Tous les statuts",
+    "searchPlaceholder": "Rechercher un DTAO...",
+    "vaultNotice": "Accès vault contrôlé — technique et commercial séparés",
+    "specHash": "Empreinte SHA-256",
+    "readinessWarning": "Tous les documents requis doivent être scellés avant approbation.",
+    "checklist": "Liste de contrôle des documents",
+    "noDocuments": "Aucun document dans ce vault",
+    "addDocument": "Ajouter un document",
+    "documentType": "Type de document",
+    "docTitle": "Titre du document",
+    "docTitlePlaceholder": "Ex. Cahier des Charges — Marché XYZ",
+    "uploadVersion": "Téléverser une version",
+    "newVersion": "Nouvelle version",
+    "upload": "Téléverser",
+    "fileName": "Nom du fichier",
+    "content": "Contenu",
+    "contentPlaceholder": "Collez le contenu textuel ou le base64 du document...",
+    "sealOnUpload": "Sceller immédiatement après téléversement",
+    "seal": "Sceller",
+    "statusHistory": "Historique des transitions",
+    "transition": "Transition",
+    "reason": "Motif",
+    "reasonPlaceholder": "Indiquer le motif de la transition...",
+    "confirmTransition": "Confirmer le changement de statut",
+    "transitionTo": "Passer à :",
+    "statuses": {
+      "DRAFT": "Brouillon",
+      "UNDER_REVIEW": "En révision",
+      "APPROVED": "Approuvé",
+      "PUBLISHED": "Publié",
+      "AMENDED": "Amendé",
+      "CANCELLED": "Annulé"
+    },
+    "vaults": {
+      "TECHNICAL": "Vault Technique",
+      "COMMERCIAL": "Vault Commercial"
+    },
+    "docTypes": {
+      "CAHIER_DES_CHARGES": "Cahier des Charges",
+      "REGLEMENT_CONSULTATION": "Règlement de Consultation",
+      "CAHIER_PRESCRIPTIONS_TECHNIQUES": "Cahier des Prescriptions Techniques",
+      "BORDEREAU_PRIX": "Bordereau de Prix",
+      "LETTRE_SOUMISSION": "Lettre de Soumission",
+      "DECLARATION_PROBITE": "Déclaration de Probité",
+      "DECLARATION_CANDIDATURE": "Déclaration de Candidature",
+      "CAUTION_SOUMISSION": "Caution de Soumission",
+      "MODELE_CONTRAT": "Modèle de Contrat",
+      "AUTRES": "Autres documents"
     }
   }
 }
