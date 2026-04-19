@@ -13,6 +13,10 @@ import SupplierList from './pages/suppliers/SupplierList';
 import BidList from './pages/bids/BidList';
 import BidReceptionForm from './pages/bids/BidReceptionForm';
 import BidDetail from './pages/bids/BidDetail';
+import ContractList from './pages/contracts/ContractList';
+import ContractForm from './pages/contracts/ContractForm';
+import ContractDetail from './pages/contracts/ContractDetail';
+import AvenantBuilder from './pages/contracts/AvenantBuilder';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -40,9 +44,13 @@ export default function App() {
         <Route path="bids" element={<BidList />} />
         <Route path="bids/new" element={<BidReceptionForm />} />
         <Route path="bids/:id" element={<BidDetail />} />
+        {/* Phase 6: Contract Management & Smart Avenants */}
+        <Route path="contracts" element={<ContractList />} />
+        <Route path="contracts/new" element={<ContractForm />} />
+        <Route path="contracts/:id" element={<ContractDetail />} />
+        <Route path="contracts/:id/avenants/new" element={<AvenantBuilder />} />
         {/* Future phase routes - placeholders */}
         <Route path="ccc" element={<PlaceholderPage title="CCC" />} />
-        <Route path="contracts" element={<PlaceholderPage title="Contracts" />} />
         <Route path="avenants" element={<PlaceholderPage title="Avenants" />} />
         <Route path="roles" element={<PlaceholderPage title="Roles & Permissions" />} />
         <Route path="audit" element={<PlaceholderPage title="Audit Trail" />} />
