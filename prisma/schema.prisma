@@ -1,0 +1,782 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Language {
+  AR
+  FR
+  EN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum ProjectStatus {
+  DRAFT
+  NEEDS_IDENTIFICATION
+  DTAO_PREPARATION
+  DTAO_REVIEW
+  PUBLISHED
+  BID_RECEPTION
+  BID_OPENING
+  TECHNICAL_EVALUATION
+  COMMERCIAL_EVALUATION
+  ADJUDICATION
+  CONTRACT_DRAFTING
+  CONTRACT_SIGNED
+  IN_EXECUTION
+  CLOSED
+  CANCELLED
+  DECLARED_INFRUCTUEUX
+}
+
+enum ProcurementMode {
+  APPEL_OFFRES_OUVERT
+  APPEL_OFFRES_RESTREINT
+  CONSULTATION_DIRECTE
+  GRE_A_GRE_SIMPLE
+  GRE_A_GRE_APRES_CONSULT
+  COMMANDE_SANS_CONSULT
+}
+
+enum BidEnvelopeType {
+  TECHNICAL
+  COMMERCIAL
+}
+
+enum BidStatus {
+  RECEIVED
+  OPENED
+  UNDER_EVALUATION
+  TECHNICALLY_COMPLIANT
+  TECHNICALLY_NON_COMPLIANT
+  COMMERCIALLY_EVALUATED
+  AWARDED
+  REJECTED
+  WITHDRAWN
+}
+
+enum DTAOStatus {
+  DRAFT
+  UNDER_REVIEW
+  APPROVED
+  PUBLISHED
+  AMENDED
+  CANCELLED
+}
+
+enum DTAODocumentType {
+  CAHIER_DES_CHARGES
+  REGLEMENT_CONSULTATION
+  CAHIER_PRESCRIPTIONS_TECHNIQUES
+  BORDEREAU_PRIX
+  LETTRE_SOUMISSION
+  DECLARATION_PROBITE
+  DECLARATION_CANDIDATURE
+  CAUTION_SOUMISSION
+  MODELE_CONTRAT
+  AUTRES
+}
+
+enum CCCDecisionType {
+  ADMIS
+  NON_ADMIS
+  ADJUGE
+  INFRUCTUEUX
+  REPORT
+}
+
+enum CCCMemberVote {
+  POUR
+  CONTRE
+  ABSTENTION
+  RESERVE
+}
+
+enum ContractStatus {
+  DRAFT
+  UNDER_REVIEW
+  PENDING_VISA_LEGAL
+  PENDING_VISA_FINANCIAL
+  PENDING_APPROVAL_DG
+  APPROVED
+  SIGNED
+  IN_EXECUTION
+  SUSPENDED
+  TERMINATED
+  COMPLETED
+  RESILIE
+}
+
+enum AvenantType {
+  MODIFICATION_SCOPE
+  EXTENSION_DELAY
+  PRICE_REVISION
+  ADDITIONAL_WORKS
+  REDUCTION
+}
+
+enum AvenantStatus {
+  DRAFT
+  UNDER_REVIEW
+  PENDING_CCC_APPROVAL
+  PENDING_LEGAL_VISA
+  PENDING_FINANCIAL_VISA
+  APPROVED
+  SIGNED
+  REJECTED
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  STATUS_CHANGE
+  LOGIN
+  LOGOUT
+  FAILED_LOGIN
+  PERMISSION_DENIED
+  DOCUMENT_UPLOAD
+  DOCUMENT_DOWNLOAD
+  BID_OPEN
+  VOTE_CAST
+  CONTRACT_SIGN
+  AVENANT_APPROVE
+  THRESHOLD_EXCEEDED
+  EXPORT_PDF
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  APPROVAL_REQUIRED
+  STATUS_CHANGED
+  DEADLINE_APPROACHING
+  THRESHOLD_WARNING
+  DOCUMENT_UPLOADED
+  BID_RECEIVED
+  CCC_MEETING_SCHEDULED
+  CONTRACT_EXPIRING
+}
+
+// ============================================================
+// CORE IDENTITY MODELS
+// ============================================================
+
+model Department {
+  id        String       @id @default(uuid())
+  code      String       @unique
+  nameFr    String       @map("name_fr")
+  nameAr    String       @map("name_ar")
+  nameEn    String       @map("name_en")
+  parentId  String?      @map("parent_id")
+  parent    Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  children  Department[] @relation("DepartmentHierarchy")
+  users     User[]
+  projects  Project[]    @relation("InitiatingDepartment")
+  isActive  Boolean      @default(true) @map("is_active")
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  @@map("departments")
+}
+
+model User {
+  id                 String    @id @default(uuid())
+  employeeId         String    @unique @map("employee_id")
+  email              String    @unique
+  passwordHash       String    @map("password_hash")
+  firstNameFr        String    @map("first_name_fr")
+  lastNameFr         String    @map("last_name_fr")
+  firstNameAr        String?   @map("first_name_ar")
+  lastNameAr         String?   @map("last_name_ar")
+  phone              String?
+  departmentId       String    @map("department_id")
+  department         Department @relation(fields: [departmentId], references: [id])
+  preferredLang      Language  @default(FR) @map("preferred_lang")
+  status             UserStatus @default(ACTIVE)
+  lastLoginAt        DateTime? @map("last_login_at")
+  failedLoginCount   Int       @default(0) @map("failed_login_count")
+  lockedUntil        DateTime? @map("locked_until")
+  mustChangePassword Boolean   @default(true) @map("must_change_password")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  userRoles       UserRole[]
+  refreshTokens   RefreshToken[]
+  auditLogs       AuditLog[]        @relation("AuditActor")
+  projectsCreated Project[]         @relation("ProjectCreator")
+  bidEvaluations  BidEvaluation[]
+  cccMemberships  CCCMember[]
+  votes           CCCVote[]
+  notifications   Notification[]
+  documentUploads DocumentVersion[] @relation("DocumentUploader")
+
+  @@index([email])
+  @@index([departmentId])
+  @@index([status])
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  nameFr      String   @map("name_fr")
+  nameAr      String   @map("name_ar")
+  nameEn      String   @map("name_en")
+  description String?
+  isSystem    Boolean  @default(false) @map("is_system")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  resource    String
+  action      String
+  scope       String?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  rolePermissions RolePermission[]
+
+  @@unique([resource, action, scope])
+  @@index([resource])
+  @@map("permissions")
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  roleId     String   @map("role_id")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  projectId  String?  @map("project_id")
+  project    Project? @relation(fields: [projectId], references: [id])
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String?  @map("assigned_by")
+  expiresAt  DateTime? @map("expires_at")
+  isActive   Boolean  @default(true) @map("is_active")
+
+  @@unique([userId, roleId, projectId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String     @map("role_id")
+  permissionId String     @map("permission_id")
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  conditions   Json?
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String    @unique
+  userAgent String?   @map("user_agent")
+  ipAddress String?   @map("ip_address")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+// ============================================================
+// PROCUREMENT MODELS
+// ============================================================
+
+model Project {
+  id              String          @id @default(uuid())
+  referenceNumber String          @unique @map("reference_number")
+  titleFr         String          @map("title_fr")
+  titleAr         String?         @map("title_ar")
+  titleEn         String?         @map("title_en")
+  descriptionFr   String?         @map("description_fr")
+  descriptionAr   String?         @map("description_ar")
+  objectFr        String          @map("object_fr")
+  status          ProjectStatus   @default(DRAFT)
+  procurementMode ProcurementMode @map("procurement_mode")
+  estimatedBudget Decimal         @map("estimated_budget") @db.Decimal(18, 2)
+  currency        String          @default("DZD")
+  budgetLineRef   String?         @map("budget_line_ref")
+
+  departmentId String     @map("department_id")
+  department   Department @relation("InitiatingDepartment", fields: [departmentId], references: [id])
+  createdById  String     @map("created_by_id")
+  createdBy    User       @relation("ProjectCreator", fields: [createdById], references: [id])
+
+  publicationDate    DateTime? @map("publication_date")
+  bidDeadline        DateTime? @map("bid_deadline")
+  bidOpeningDate     DateTime? @map("bid_opening_date")
+  evaluationDeadline DateTime? @map("evaluation_deadline")
+  contractDeadline   DateTime? @map("contract_deadline")
+
+  isAboveNationalThreshold Boolean @default(false) @map("is_above_national_threshold")
+  requiresCCCApproval      Boolean @default(true) @map("requires_ccc_approval")
+  minimumBidCount          Int     @default(3) @map("minimum_bid_count")
+
+  fiscalYear Int      @map("fiscal_year")
+  tags       String[] @default([])
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  userRoles     UserRole[]
+  dtao          DTAO?
+  bids          Bid[]
+  cccMeetings   CCCMeeting[]
+  contracts     Contract[]
+  statusHistory ProjectStatusHistory[]
+
+  @@index([status])
+  @@index([departmentId])
+  @@index([procurementMode])
+  @@index([fiscalYear])
+  @@index([referenceNumber])
+  @@map("projects")
+}
+
+model ProjectStatusHistory {
+  id          String        @id @default(uuid())
+  projectId   String        @map("project_id")
+  project     Project       @relation(fields: [projectId], references: [id])
+  fromStatus  ProjectStatus @map("from_status")
+  toStatus    ProjectStatus @map("to_status")
+  changedById String        @map("changed_by_id")
+  reason      String?
+  metadata    Json?
+  changedAt   DateTime      @default(now()) @map("changed_at")
+
+  @@index([projectId])
+  @@index([changedAt])
+  @@map("project_status_history")
+}
+
+// ============================================================
+// DTAO (Dossier Technique d'Appel d'Offres)
+// ============================================================
+
+model DTAO {
+  id              String     @id @default(uuid())
+  projectId       String     @unique @map("project_id")
+  project         Project    @relation(fields: [projectId], references: [id])
+  referenceNumber String     @unique @map("reference_number")
+  status          DTAOStatus @default(DRAFT)
+  versionMajor    Int        @default(1) @map("version_major")
+  versionMinor    Int        @default(0) @map("version_minor")
+
+  technicalSpecHash String? @map("technical_spec_hash")
+
+  preparedById String    @map("prepared_by_id")
+  reviewedById String?   @map("reviewed_by_id")
+  approvedById String?   @map("approved_by_id")
+  approvedAt   DateTime? @map("approved_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  documents DTAODocument[]
+
+  @@index([status])
+  @@map("dtao")
+}
+
+model DTAODocument {
+  id           String           @id @default(uuid())
+  dtaoId       String           @map("dtao_id")
+  dtao         DTAO             @relation(fields: [dtaoId], references: [id])
+  documentType DTAODocumentType @map("document_type")
+  titleFr      String           @map("title_fr")
+  vault        BidEnvelopeType
+
+  versions DocumentVersion[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([dtaoId])
+  @@index([vault])
+  @@map("dtao_documents")
+}
+
+model DocumentVersion {
+  id            String       @id @default(uuid())
+  documentId    String       @map("document_id")
+  document      DTAODocument @relation(fields: [documentId], references: [id])
+  versionNumber Int          @map("version_number")
+  filePath      String       @map("file_path")
+  fileName      String       @map("file_name")
+  fileSize      Int          @map("file_size")
+  mimeType      String       @map("mime_type")
+  sha256Hash    String       @map("sha256_hash")
+  uploadedById  String       @map("uploaded_by_id")
+  uploadedBy    User         @relation("DocumentUploader", fields: [uploadedById], references: [id])
+  isSealed      Boolean      @default(false) @map("is_sealed")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  @@unique([documentId, versionNumber])
+  @@index([documentId])
+  @@map("document_versions")
+}
+
+// ============================================================
+// BIDS
+// ============================================================
+
+model Supplier {
+  id                 String  @id @default(uuid())
+  registrationNumber String  @unique @map("registration_number")
+  companyNameFr      String  @map("company_name_fr")
+  companyNameAr      String? @map("company_name_ar")
+  contactEmail       String? @map("contact_email")
+  contactPhone       String? @map("contact_phone")
+  address            String?
+  wilaya             String?
+  country            String  @default("DZ")
+  isBlacklisted      Boolean @default(false) @map("is_blacklisted")
+  blacklistReason    String? @map("blacklist_reason")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  bids Bid[]
+
+  @@index([registrationNumber])
+  @@index([isBlacklisted])
+  @@map("suppliers")
+}
+
+model Bid {
+  id              String    @id @default(uuid())
+  projectId       String    @map("project_id")
+  project         Project   @relation(fields: [projectId], references: [id])
+  supplierId      String    @map("supplier_id")
+  supplier        Supplier  @relation(fields: [supplierId], references: [id])
+  referenceNumber String    @unique @map("reference_number")
+  status          BidStatus @default(RECEIVED)
+  receivedAt      DateTime  @map("received_at")
+  receivedByName  String    @map("received_by_name")
+
+  technicalEnvelopeSealed  Boolean @default(true) @map("technical_envelope_sealed")
+  commercialEnvelopeSealed Boolean @default(true) @map("commercial_envelope_sealed")
+
+  technicalScore  Decimal? @map("technical_score") @db.Decimal(5, 2)
+  commercialScore Decimal? @map("commercial_score") @db.Decimal(5, 2)
+  compositeScore  Decimal? @map("composite_score") @db.Decimal(5, 2)
+  rank            Int?
+
+  hasBidBond        Boolean   @default(false) @map("has_bid_bond")
+  bidBondAmount     Decimal?  @map("bid_bond_amount") @db.Decimal(18, 2)
+  bidBondExpiryDate DateTime? @map("bid_bond_expiry_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  envelopes   BidEnvelope[]
+  evaluations BidEvaluation[]
+
+  @@unique([projectId, supplierId])
+  @@index([projectId])
+  @@index([status])
+  @@map("bids")
+}
+
+model BidEnvelope {
+  id                String          @id @default(uuid())
+  bidId             String          @map("bid_id")
+  bid               Bid             @relation(fields: [bidId], references: [id])
+  envelopeType      BidEnvelopeType @map("envelope_type")
+  filePath          String          @map("file_path")
+  fileName          String          @map("file_name")
+  fileSize          Int             @map("file_size")
+  sha256Hash        String          @map("sha256_hash")
+  openedAt          DateTime?       @map("opened_at")
+  openedInMeetingId String?         @map("opened_in_meeting_id")
+  isSealed          Boolean         @default(true) @map("is_sealed")
+  createdAt         DateTime        @default(now()) @map("created_at")
+
+  @@unique([bidId, envelopeType])
+  @@index([bidId])
+  @@index([envelopeType])
+  @@map("bid_envelopes")
+}
+
+model BidEvaluation {
+  id             String          @id @default(uuid())
+  bidId          String          @map("bid_id")
+  bid            Bid             @relation(fields: [bidId], references: [id])
+  evaluatorId    String          @map("evaluator_id")
+  evaluator      User            @relation(fields: [evaluatorId], references: [id])
+  envelopeType   BidEnvelopeType @map("envelope_type")
+  criterionCode  String          @map("criterion_code")
+  criterionLabel String          @map("criterion_label")
+  maxScore       Decimal         @map("max_score") @db.Decimal(5, 2)
+  givenScore     Decimal         @map("given_score") @db.Decimal(5, 2)
+  justification  String?
+  evaluatedAt    DateTime        @default(now()) @map("evaluated_at")
+
+  @@unique([bidId, evaluatorId, criterionCode])
+  @@index([bidId])
+  @@index([evaluatorId])
+  @@index([envelopeType])
+  @@map("bid_evaluations")
+}
+
+// ============================================================
+// CCC (Commission de Controle des Commandes)
+// ============================================================
+
+model CCCMeeting {
+  id                String           @id @default(uuid())
+  projectId         String           @map("project_id")
+  project           Project          @relation(fields: [projectId], references: [id])
+  meetingNumber     Int              @map("meeting_number")
+  subject           String
+  scheduledAt       DateTime         @map("scheduled_at")
+  startedAt         DateTime?        @map("started_at")
+  endedAt           DateTime?        @map("ended_at")
+  location          String?
+  phase             BidEnvelopeType?
+  quorumRequired    Int              @default(3) @map("quorum_required")
+  quorumMet         Boolean          @default(false) @map("quorum_met")
+  decision          CCCDecisionType?
+  decisionRationale String?          @map("decision_rationale")
+
+  pvFilePath    String?   @map("pv_file_path")
+  pvGeneratedAt DateTime? @map("pv_generated_at")
+  pvSha256Hash  String?   @map("pv_sha256_hash")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members     CCCMember[]
+  votes       CCCVote[]
+  agendaItems CCCAgendaItem[]
+
+  @@unique([projectId, meetingNumber])
+  @@index([projectId])
+  @@index([scheduledAt])
+  @@map("ccc_meetings")
+}
+
+model CCCMember {
+  id         String     @id @default(uuid())
+  meetingId  String     @map("meeting_id")
+  meeting    CCCMeeting @relation(fields: [meetingId], references: [id])
+  userId     String     @map("user_id")
+  user       User       @relation(fields: [userId], references: [id])
+  roleFr     String     @map("role_fr")
+  isPresent  Boolean    @default(false) @map("is_present")
+  attendedAt DateTime?  @map("attended_at")
+  signature  String?
+
+  @@unique([meetingId, userId])
+  @@index([meetingId])
+  @@map("ccc_members")
+}
+
+model CCCAgendaItem {
+  id          String     @id @default(uuid())
+  meetingId   String     @map("meeting_id")
+  meeting     CCCMeeting @relation(fields: [meetingId], references: [id])
+  orderIndex  Int        @map("order_index")
+  titleFr     String     @map("title_fr")
+  description String?
+  resolution  String?
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  @@index([meetingId])
+  @@map("ccc_agenda_items")
+}
+
+model CCCVote {
+  id          String        @id @default(uuid())
+  meetingId   String        @map("meeting_id")
+  meeting     CCCMeeting    @relation(fields: [meetingId], references: [id])
+  voterId     String        @map("voter_id")
+  voter       User          @relation(fields: [voterId], references: [id])
+  subjectType String        @map("subject_type")
+  subjectId   String        @map("subject_id")
+  vote        CCCMemberVote
+  reservation String?
+  votedAt     DateTime      @default(now()) @map("voted_at")
+
+  @@unique([meetingId, voterId, subjectType, subjectId])
+  @@index([meetingId])
+  @@index([voterId])
+  @@map("ccc_votes")
+}
+
+// ============================================================
+// CONTRACTS
+// ============================================================
+
+model Contract {
+  id              String         @id @default(uuid())
+  projectId       String         @map("project_id")
+  project         Project        @relation(fields: [projectId], references: [id])
+  referenceNumber String         @unique @map("reference_number")
+  titleFr         String         @map("title_fr")
+  status          ContractStatus @default(DRAFT)
+
+  totalAmount        Decimal  @map("total_amount") @db.Decimal(18, 2)
+  currency           String   @default("DZD")
+  paymentTerms       String?  @map("payment_terms")
+  retentionRate      Decimal? @map("retention_rate") @db.Decimal(5, 2)
+  advancePaymentRate Decimal? @map("advance_payment_rate") @db.Decimal(5, 2)
+
+  signedAt       DateTime? @map("signed_at")
+  effectiveDate  DateTime? @map("effective_date")
+  expiryDate     DateTime? @map("expiry_date")
+  durationMonths Int?      @map("duration_months")
+
+  supplierId   String  @map("supplier_id")
+  awardedBidId String? @unique @map("awarded_bid_id")
+
+  legalVisaById     String?   @map("legal_visa_by_id")
+  legalVisaAt       DateTime? @map("legal_visa_at")
+  financialVisaById String?   @map("financial_visa_by_id")
+  financialVisaAt   DateTime? @map("financial_visa_at")
+  approvedById      String?   @map("approved_by_id")
+  approvedAt        DateTime? @map("approved_at")
+
+  filePath   String? @map("file_path")
+  sha256Hash String? @map("sha256_hash")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  avenants Avenant[]
+
+  @@index([projectId])
+  @@index([status])
+  @@index([supplierId])
+  @@index([expiryDate])
+  @@map("contracts")
+}
+
+model Avenant {
+  id                   String        @id @default(uuid())
+  contractId           String        @map("contract_id")
+  contract             Contract      @relation(fields: [contractId], references: [id])
+  avenantNumber        Int           @map("avenant_number")
+  referenceNumber      String        @unique @map("reference_number")
+  type                 AvenantType
+  status               AvenantStatus @default(DRAFT)
+  titleFr              String        @map("title_fr")
+  justification        String
+
+  originalAmount       Decimal @map("original_amount") @db.Decimal(18, 2)
+  amendedAmount        Decimal @map("amended_amount") @db.Decimal(18, 2)
+  differenceAmount     Decimal @map("difference_amount") @db.Decimal(18, 2)
+  cumulativeAvenantPct Decimal @map("cumulative_avenant_pct") @db.Decimal(5, 2)
+
+  exceedsThreshold  Boolean  @default(false) @map("exceeds_threshold")
+  thresholdPct      Decimal? @map("threshold_pct") @db.Decimal(5, 2)
+  requiresNewTender Boolean  @default(false) @map("requires_new_tender")
+
+  originalEndDate DateTime? @map("original_end_date")
+  newEndDate      DateTime? @map("new_end_date")
+
+  requestedById String    @map("requested_by_id")
+  legalVisaAt   DateTime? @map("legal_visa_at")
+  financialVisaAt DateTime? @map("financial_visa_at")
+  approvedAt    DateTime? @map("approved_at")
+  approvedById  String?   @map("approved_by_id")
+
+  filePath   String? @map("file_path")
+  sha256Hash String? @map("sha256_hash")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([contractId, avenantNumber])
+  @@index([contractId])
+  @@index([status])
+  @@map("avenants")
+}
+
+// ============================================================
+// AUDIT & NOTIFICATIONS
+// ============================================================
+
+model AuditLog {
+  id            String      @id @default(uuid())
+  actorId       String?     @map("actor_id")
+  actor         User?       @relation("AuditActor", fields: [actorId], references: [id])
+  action        AuditAction
+  resource      String
+  resourceId    String?     @map("resource_id")
+  description   String?
+  previousState Json?       @map("previous_state")
+  newState      Json?       @map("new_state")
+  ipAddress     String?     @map("ip_address")
+  userAgent     String?     @map("user_agent")
+  metadata      Json?
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@index([actorId])
+  @@index([action])
+  @@index([resource, resourceId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Notification {
+  id           String           @id @default(uuid())
+  userId       String           @map("user_id")
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         NotificationType
+  titleFr      String           @map("title_fr")
+  titleAr      String?          @map("title_ar")
+  bodyFr       String?          @map("body_fr")
+  resourceType String?          @map("resource_type")
+  resourceId   String?          @map("resource_id")
+  isRead       Boolean          @default(false) @map("is_read")
+  readAt       DateTime?        @map("read_at")
+  createdAt    DateTime         @default(now()) @map("created_at")
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model SystemConfig {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       Json
+  description String?
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("system_config")
+}

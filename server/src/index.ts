@@ -1,0 +1,56 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import { env } from './config/env';
+import { corsOptions } from './config/cors';
+import { generalLimiter } from './middleware/rateLimiter';
+import { errorHandler } from './middleware/errorHandler';
+import { logger } from './utils/logger';
+
+// Route imports
+import authRoutes from './modules/auth/auth.routes';
+import usersRoutes from './modules/users/users.routes';
+import rolesRoutes from './modules/roles/roles.routes';
+import auditRoutes from './modules/audit/audit.routes';
+import projectsRoutes from './modules/projects/projects.routes';
+import dtaoRoutes from './modules/dtao/dtao.routes';
+import suppliersRoutes from './modules/suppliers/suppliers.routes';
+import bidsRoutes from './modules/bids/bids.routes';
+import contractsRoutes from './modules/contracts/contracts.routes';
+
+const app = express();
+
+// Global middleware
+app.use(helmet());
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(cookieParser());
+app.use(generalLimiter);
+
+// Health check
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', version: '5.0.0', timestamp: new Date().toISOString() });
+});
+
+// API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/roles', rolesRoutes);
+app.use('/api/audit', auditRoutes);
+app.use('/api/projects', projectsRoutes);
+app.use('/api/dtao', dtaoRoutes);
+app.use('/api/suppliers', suppliersRoutes);
+app.use('/api/bids', bidsRoutes);
+app.use('/api/contracts', contractsRoutes);
+
+// Error handler (must be last)
+app.use(errorHandler);
+
+// Start server
+app.listen(env.PORT, () => {
+  logger.info(`SonaERP server running on port ${env.PORT} [${env.NODE_ENV}]`);
+});
+
+export default app;
