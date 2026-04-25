@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 
+// In Electron production mode, Vite proxy is unavailable — hit the backend directly
+const isElectron = typeof window !== 'undefined' && !!(window as any).electronAPI;
+const baseURL = isElectron && window.location.protocol === 'file:'
+  ? 'http://localhost:3000/api'
+  : '/api';
+
 const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });

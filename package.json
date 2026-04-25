@@ -3,6 +3,7 @@
   "version": "5.0.0",
   "description": "SonaERP v5.0 - Digital Procurement & Contract Management Platform for Sonatrach",
   "private": true,
+  "main": "electron/main.js",
   "workspaces": [
     "server",
     "client",
@@ -16,9 +17,16 @@
     "prisma:generate": "npx prisma generate --schema=prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate dev --schema=prisma/schema.prisma",
     "prisma:seed": "cd server && npm run seed",
-    "db:reset": "npx prisma migrate reset --schema=prisma/schema.prisma"
+    "db:reset": "npx prisma migrate reset --schema=prisma/schema.prisma",
+    "electron:dev": "concurrently --kill-others \"cd server && npm run dev\" \"cd client && npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "cd client && npm run build && electron-builder --config electron-builder.json",
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
-    "prisma": "^5.8.0"
+    "concurrently": "^8.2.2",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "prisma": "^5.8.0",
+    "wait-on": "^7.2.0"
   }
 }

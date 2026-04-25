@@ -1,0 +1,53 @@
+{
+  "appId": "dz.sonatrach.sonaerp",
+  "productName": "SONA-ERP v5.0",
+  "copyright": "Copyright © 2024 Sonatrach",
+  "directories": {
+    "output": "dist-electron"
+  },
+  "files": [
+    "electron/**/*",
+    "!server/node_modules/.cache",
+    "!client/node_modules"
+  ],
+  "extraResources": [
+    {
+      "from": "server",
+      "to": "server",
+      "filter": [
+        "**/*",
+        "!node_modules/.cache/**"
+      ]
+    },
+    {
+      "from": "client/dist",
+      "to": "client-dist",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "prisma",
+      "to": "prisma",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "electron/icon.png",
+    "artifactName": "SONA-ERP-v${version}-portable.${ext}"
+  },
+  "linux": {
+    "target": ["AppImage"],
+    "icon": "electron/icon.png",
+    "category": "Office"
+  },
+  "mac": {
+    "target": ["dmg"],
+    "icon": "electron/icon.png",
+    "category": "public.app-category.business"
+  }
+}
