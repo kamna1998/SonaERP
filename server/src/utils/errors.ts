@@ -55,3 +55,21 @@ export class AccountLockedError extends AppError {
     );
   }
 }
+
+/**
+ * Compliance gate failure (Phase 1 — Legal Gatekeeper).
+ * Returned by middleware when a workflow step is blocked due to missing
+ * mandatory documents, separation-of-powers conflicts, or admin-procurement
+ * rule violations.
+ */
+export class ComplianceError extends AppError {
+  public readonly missing?: Array<{ type: string; descriptionFr: string; legalReference?: string }>;
+
+  constructor(
+    message: string,
+    missing?: Array<{ type: string; descriptionFr: string; legalReference?: string }>,
+  ) {
+    super(message, 400, 'COMPLIANCE_ERROR');
+    this.missing = missing;
+  }
+}

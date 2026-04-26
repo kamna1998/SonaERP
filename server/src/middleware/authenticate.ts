@@ -17,6 +17,8 @@ export function authenticate(req: Request, _res: Response, next: NextFunction): 
       roles: payload.roles,
       departmentId: payload.departmentId,
       permissions: payload.permissions,
+      province: payload.province,
+      canParticipateInProcurement: payload.canParticipateInProcurement,
     };
     next();
   } catch (err: any) {

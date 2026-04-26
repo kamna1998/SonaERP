@@ -80,7 +80,22 @@
     "activeProjects": "Active Projects",
     "pendingApprovals": "Pending Approvals",
     "openTenders": "Open Tenders",
-    "activeContracts": "Active Contracts"
+    "activeContracts": "Active Contracts",
+    "total": "total",
+    "avgLeadTime": "Avg Lead Time",
+    "projectsSampled": "projects sampled",
+    "totalBids": "Bids Received",
+    "awarded": "awarded",
+    "budgetConsumption": "Budget Consumption",
+    "committed": "Committed",
+    "savings": "Savings Achieved",
+    "estimated": "Estimated",
+    "contracted": "Contracted",
+    "savingsAmount": "Savings",
+    "statusBreakdown": "Status Breakdown",
+    "procurementModes": "Procurement Modes",
+    "chainIntact": "Audit chain intact",
+    "chainBroken": "Audit chain compromised"
   },
   "projects": {
     "title": "Annual Procurement Plan",

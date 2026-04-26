@@ -19,6 +19,8 @@ import dtaoRoutes from './modules/dtao/dtao.routes';
 import suppliersRoutes from './modules/suppliers/suppliers.routes';
 import bidsRoutes from './modules/bids/bids.routes';
 import contractsRoutes from './modules/contracts/contracts.routes';
+import reportsRoutes from './modules/reports/reports.routes';
+import dashboardRoutes from './modules/dashboard/dashboard.routes';
 
 const app = express();
 
@@ -44,6 +46,8 @@ app.use('/api/dtao', dtaoRoutes);
 app.use('/api/suppliers', suppliersRoutes);
 app.use('/api/bids', bidsRoutes);
 app.use('/api/contracts', contractsRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Error handler (must be last)
 app.use(errorHandler);

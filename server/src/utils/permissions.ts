@@ -97,6 +97,20 @@ export const PERMISSIONS = {
   AUDIT_READ_OWN: 'audit:read:own',
   AUDIT_EXPORT: 'audit:export',
 
+  // Reports / PDF generation (Phase 2)
+  REPORT_DOWNLOAD: 'report:download',
+  REPORT_DOWNLOAD_OWN_DEPT: 'report:download:own_dept',
+
+  // Compliance documents (Phase 1)
+  COMPLIANCE_DOC_UPLOAD: 'compliance_doc:upload',
+  COMPLIANCE_DOC_READ: 'compliance_doc:read',
+  COMPLIANCE_DOC_DELETE: 'compliance_doc:delete',
+
+  // Digital sign-offs (Phase 1.2)
+  SIGNOFF_LEGAL: 'signoff:legal',
+  SIGNOFF_FINANCIAL: 'signoff:financial',
+  SIGNOFF_DG: 'signoff:dg',
+
   // Config
   CONFIG_MANAGE: 'config:manage',
 
