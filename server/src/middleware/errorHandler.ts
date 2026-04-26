@@ -1,8 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError, ValidationError } from '../utils/errors';
+import { AppError, ValidationError, ComplianceError } from '../utils/errors';
 import { logger } from '../utils/logger';
 
 export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction): void {
+  if (err instanceof ComplianceError) {
+    res.status(err.statusCode).json({
+      error: {
+        code: err.code,
+        message: err.message,
+        missing: err.missing,
+      },
+    });
+    return;
+  }
+
   if (err instanceof ValidationError) {
     res.status(err.statusCode).json({
       error: {

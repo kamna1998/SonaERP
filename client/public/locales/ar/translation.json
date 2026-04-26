@@ -80,7 +80,22 @@
     "activeProjects": "المشاريع النشطة",
     "pendingApprovals": "الموافقات المعلقة",
     "openTenders": "المناقصات المفتوحة",
-    "activeContracts": "العقود النشطة"
+    "activeContracts": "العقود النشطة",
+    "total": "المجموع",
+    "avgLeadTime": "متوسط المهلة",
+    "projectsSampled": "مشاريع مُقاسة",
+    "totalBids": "العروض المستلمة",
+    "awarded": "المرسى عليها",
+    "budgetConsumption": "استهلاك الميزانية",
+    "committed": "الملتزم به",
+    "savings": "الوفورات المحققة",
+    "estimated": "التقديري",
+    "contracted": "المتعاقد",
+    "savingsAmount": "الوفر",
+    "statusBreakdown": "التوزيع حسب الحالة",
+    "procurementModes": "أنماط التعاقد",
+    "chainIntact": "سلسلة التدقيق سليمة",
+    "chainBroken": "سلسلة التدقيق مخترقة"
   },
   "projects": {
     "title": "مخطط الصفقات السنوي",

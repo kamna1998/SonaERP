@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import type { AlgerianProvince } from '@prisma/client';
 import { env } from '../config/env';
 
 export interface AccessTokenPayload {
@@ -8,6 +9,8 @@ export interface AccessTokenPayload {
   roles: string[];
   departmentId: string;
   permissions: string[];
+  province: AlgerianProvince;
+  canParticipateInProcurement: boolean;
 }
 
 export function generateAccessToken(payload: AccessTokenPayload): string {

@@ -140,6 +140,8 @@ export async function login(
     roles,
     departmentId: user.departmentId,
     permissions,
+    province: user.province,
+    canParticipateInProcurement: user.canParticipateInProcurement,
   };
 
   const accessToken = generateAccessToken(tokenPayload);
@@ -236,6 +238,8 @@ export async function refreshTokens(
     roles,
     departmentId: storedToken.user.departmentId,
     permissions,
+    province: storedToken.user.province,
+    canParticipateInProcurement: storedToken.user.canParticipateInProcurement,
   };
 
   const newAccessToken = generateAccessToken(tokenPayload);

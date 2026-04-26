@@ -1,15 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import { ForbiddenError } from '../utils/errors';
 import { logger } from '../utils/logger';
+import { prisma } from '../config/database';
+import type { AlgerianProvince } from '@prisma/client';
 
 /**
- * Data isolation middleware enforcing the technical/commercial vault separation.
+ * Data isolation middleware enforcing the technical/commercial vault separation
+ * and provincial data silos.
  *
- * This is the core "technical privacy vs legal transparency" enforcement:
+ * Vault isolation:
  * - INITIATOR / technical roles → can access TECHNICAL vault only
  * - PROC_OFFICER / FINANCE_CONTROLLER → can access COMMERCIAL vault only
  * - CCC members → TECHNICAL during tech phase, BOTH during commercial phase
  * - SYS_ADMIN / AUDITOR → can access both (read-only for auditor)
+ *
+ * Province isolation (Phase 4.2):
+ * - Users only see projects created by users in the same administrative province
+ * - ADMIN / SYS_ADMIN / DIRECTOR_GENERAL / AUDITOR bypass province check
  */
 export type VaultType = 'TECHNICAL' | 'COMMERCIAL';
 
@@ -78,4 +85,79 @@ export function enforceVaultAccess(requestedVault: VaultType) {
 
     return next(new ForbiddenError('No vault access configured for your role'));
   };
+}
+
+// ─── Province-based data isolation ──────────────────────────────────────────
+
+const PROVINCE_BYPASS_ROLES = ['ADMIN', 'SYS_ADMIN', 'DIRECTOR_GENERAL', 'AUDITOR'];
+
+export function enforceProvinceIsolation(resource: 'project' | 'contract' | 'bid') {
+  return async (req: Request, _res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return next(new ForbiddenError('Authentication required'));
+    }
+
+    if (req.user.roles.some((r) => PROVINCE_BYPASS_ROLES.includes(r))) {
+      return next();
+    }
+
+    const userProvince = req.user.province;
+    if (!userProvince) return next();
+
+    const resourceId = req.params.id;
+    if (!resourceId) return next();
+
+    try {
+      let creatorProvince: AlgerianProvince | null = null;
+
+      if (resource === 'project') {
+        const project = await prisma.project.findUnique({
+          where: { id: resourceId },
+          select: { createdBy: { select: { province: true } } },
+        });
+        creatorProvince = project?.createdBy.province ?? null;
+      } else if (resource === 'contract') {
+        const contract = await prisma.contract.findUnique({
+          where: { id: resourceId },
+          select: { project: { select: { createdBy: { select: { province: true } } } } },
+        });
+        creatorProvince = contract?.project.createdBy.province ?? null;
+      } else if (resource === 'bid') {
+        const bid = await prisma.bid.findUnique({
+          where: { id: resourceId },
+          select: { project: { select: { createdBy: { select: { province: true } } } } },
+        });
+        creatorProvince = bid?.project.createdBy.province ?? null;
+      }
+
+      if (creatorProvince && creatorProvince !== userProvince) {
+        logger.warn('Province isolation block', {
+          userId: req.user.id,
+          userProvince,
+          creatorProvince,
+          resource,
+          resourceId,
+        });
+        return next(
+          new ForbiddenError(
+            `Accès interdit: cette ressource appartient à la province ${creatorProvince}`,
+          ),
+        );
+      }
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+export function getProvinceWhereClause(
+  userProvince: AlgerianProvince | undefined,
+  userRoles: string[],
+): { createdBy?: { province: AlgerianProvince } } {
+  if (!userProvince || userRoles.some((r) => PROVINCE_BYPASS_ROLES.includes(r))) {
+    return {};
+  }
+  return { createdBy: { province: userProvince } };
 }

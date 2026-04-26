@@ -157,6 +157,50 @@ enum AuditAction {
   AVENANT_APPROVE
   THRESHOLD_EXCEEDED
   EXPORT_PDF
+  COMPLIANCE_BLOCK
+  SIGN_OFF
+}
+
+enum AlgerianProvince {
+  ALGER
+  ORAN
+  CONSTANTINE
+  ANNABA
+  BLIDA
+  BATNA
+  SETIF
+  SIDI_BEL_ABBES
+  BISKRA
+  TLEMCEN
+  BEJAIA
+  TIZI_OUZOU
+  BECHAR
+  TAMANRASSET
+  GHARDAIA
+  OUARGLA
+  TOUGGOURT
+  HASSI_MESSAOUD
+  HASSI_RMEL
+  ADRAR
+  ILLIZI
+  TINDOUF
+  LAGHOUAT
+  EL_OUED
+  DJELFA
+  OTHER
+}
+
+enum DocumentRequirementType {
+  TECHNICAL_SPEC
+  BUDGET_AUTHORIZATION
+  LEGAL_VISA_CERTIFICATE
+  FINANCIAL_VISA_CERTIFICATE
+  DG_APPROVAL_LETTER
+  CCC_PV_SIGNED
+  CONTRACT_SIGNED_PDF
+  AVENANT_JUSTIFICATION_PDF
+  SUPPLIER_CERTIFICATE
+  ARTICLE_83_DEROGATION
 }
 
 enum NotificationType {
@@ -211,6 +255,11 @@ model User {
   failedLoginCount   Int       @default(0) @map("failed_login_count")
   lockedUntil        DateTime? @map("locked_until")
   mustChangePassword Boolean   @default(true) @map("must_change_password")
+
+  // Phase 4 — Identity isolation
+  province                    AlgerianProvince @default(ALGER)
+  canParticipateInProcurement Boolean          @default(true) @map("can_participate_in_procurement")
+
   createdAt          DateTime  @default(now()) @map("created_at")
   updatedAt          DateTime  @updatedAt @map("updated_at")
 
@@ -223,6 +272,8 @@ model User {
   votes           CCCVote[]
   notifications   Notification[]
   documentUploads DocumentVersion[] @relation("DocumentUploader")
+  signOffs        DigitalSignOff[]
+  complianceDocs  ComplianceDocument[] @relation("ComplianceDocUploader")
 
   @@index([email])
   @@index([departmentId])
@@ -743,13 +794,81 @@ model AuditLog {
   ipAddress     String?     @map("ip_address")
   userAgent     String?     @map("user_agent")
   metadata      Json?
+  justification String?
+
+  // Hash-chained immutable trail (each entry hashes the previous → tamper-evident)
+  sequence     Int     @default(autoincrement())
+  previousHash String? @map("previous_hash")
+  chainHash    String? @unique @map("chain_hash")
+  documentHash String? @map("document_hash")
+
   createdAt     DateTime    @default(now()) @map("created_at")
 
   @@index([actorId])
   @@index([action])
   @@index([resource, resourceId])
   @@index([createdAt])
+  @@index([sequence])
   @@map("audit_logs")
+}
+
+// ============================================================
+// Compliance & Document Requirements (Phase 1 — Legal Gatekeeper)
+// ============================================================
+
+model DocumentRequirement {
+  id              String                  @id @default(uuid())
+  resource        String                  // 'project' | 'contract' | 'avenant' | 'ccc_meeting'
+  fromStatus      String                  @map("from_status")
+  toStatus        String                  @map("to_status")
+  requiredType    DocumentRequirementType @map("required_type")
+  isMandatory     Boolean                 @default(true) @map("is_mandatory")
+  legalReference  String?                 @map("legal_reference") // e.g., "Directive E-025/M R4 Art. 83"
+  descriptionFr   String                  @map("description_fr")
+  descriptionAr   String?                 @map("description_ar")
+  createdAt       DateTime                @default(now()) @map("created_at")
+
+  @@unique([resource, fromStatus, toStatus, requiredType])
+  @@index([resource])
+  @@map("document_requirements")
+}
+
+model ComplianceDocument {
+  id           String                  @id @default(uuid())
+  resource     String
+  resourceId   String                  @map("resource_id")
+  requiredType DocumentRequirementType @map("required_type")
+  filename     String
+  filePath     String                  @map("file_path")
+  fileSize     Int                     @map("file_size")
+  mimeType     String                  @map("mime_type")
+  sha256Hash   String                  @map("sha256_hash")
+  uploadedById String                  @map("uploaded_by_id")
+  uploadedBy   User                    @relation("ComplianceDocUploader", fields: [uploadedById], references: [id])
+  uploadedAt   DateTime                @default(now()) @map("uploaded_at")
+
+  @@index([resource, resourceId])
+  @@index([requiredType])
+  @@index([sha256Hash])
+  @@map("compliance_documents")
+}
+
+model DigitalSignOff {
+  id            String   @id @default(uuid())
+  resource      String   // 'project' | 'contract' | 'avenant'
+  resourceId    String   @map("resource_id")
+  signOffType   String   @map("sign_off_type") // 'LEGAL_VISA' | 'FINANCIAL_VISA' | 'DG_APPROVAL' | 'CCC_DECISION'
+  signedById    String   @map("signed_by_id")
+  signedBy      User     @relation(fields: [signedById], references: [id])
+  signedAt      DateTime @default(now()) @map("signed_at")
+  comment       String?
+  documentHash  String?  @map("document_hash") // hash of the document signed over
+  signature     String   // SHA-256(resource:resourceId:signedById:signedAt:documentHash)
+
+  @@unique([resource, resourceId, signOffType, signedById])
+  @@index([resource, resourceId])
+  @@index([signOffType])
+  @@map("digital_sign_offs")
 }
 
 model Notification {

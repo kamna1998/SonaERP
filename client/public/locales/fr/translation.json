@@ -80,7 +80,22 @@
     "activeProjects": "Projets actifs",
     "pendingApprovals": "Approbations en attente",
     "openTenders": "Appels d'offres ouverts",
-    "activeContracts": "Contrats actifs"
+    "activeContracts": "Contrats actifs",
+    "total": "total",
+    "avgLeadTime": "Délai moyen",
+    "projectsSampled": "projets mesurés",
+    "totalBids": "Offres reçues",
+    "awarded": "adjugées",
+    "budgetConsumption": "Consommation budgétaire",
+    "committed": "Engagé",
+    "savings": "Économies réalisées",
+    "estimated": "Estimé",
+    "contracted": "Contracté",
+    "savingsAmount": "Économie",
+    "statusBreakdown": "Répartition par statut",
+    "procurementModes": "Modes de passation",
+    "chainIntact": "Chaîne d'audit intègre",
+    "chainBroken": "Chaîne d'audit compromise"
   },
   "projects": {
     "title": "Plan de Passation des Marchés",
