@@ -495,5 +495,99 @@
         "totalValue": "Valeur totale"
       }
     }
+  },
+  "ccc": {
+    "title": "Commission de Contrôle des Commandes",
+    "subtitle": "Réunions CCC, votes collégiaux et décisions",
+    "scheduleMeeting": "Programmer une réunion",
+    "scheduleSubtitle": "Planifier une session de la Commission de Contrôle des Commandes",
+    "meetingNumber": "Réunion N°",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Évaluation technique — Marché XYZ",
+    "project": "Projet",
+    "selectProject": "— Sélectionner un projet —",
+    "eligibleStatusesHint": "Projets éligibles: en phase de réception, ouverture ou évaluation.",
+    "scheduledAt": "Date et heure",
+    "location": "Lieu",
+    "locationPlaceholder": "Salle de réunion B3",
+    "phase": "Phase",
+    "phases": {
+      "TECHNICAL": "Technique",
+      "COMMERCIAL": "Commerciale"
+    },
+    "quorum": "Quorum",
+    "quorumRequired": "Quorum requis",
+    "quorumHint": "Minimum 3 membres présents pour ouvrir la session.",
+    "quorumNotMet": "Quorum non atteint",
+    "state": "État",
+    "decision": "Décision",
+    "searchPlaceholder": "Rechercher par sujet ou référence projet...",
+    "meetingsCount": "réunions",
+    "sessionState": "État de session",
+    "sessionStates": {
+      "scheduled": "Programmée",
+      "inSession": "En session",
+      "closed": "Clôturée"
+    },
+    "sessionControl": "Contrôle de session",
+    "stats": {
+      "total": "Total",
+      "scheduled": "Programmées",
+      "inSession": "En session",
+      "decided": "Décidées",
+      "closed": "Clôturées"
+    },
+    "members": "Membres",
+    "addMember": "Ajouter",
+    "selectMember": "Sélectionner un utilisateur",
+    "memberRole": "Rôle (ex: Président, Membre, Rapporteur)",
+    "present": "Présent",
+    "absent": "Absent",
+    "removeMember": "Retirer",
+    "agenda": "Ordre du jour",
+    "agendaItem": "Point",
+    "addAgendaItem": "Ajouter un point",
+    "agendaTitle": "Titre du point",
+    "agendaDescription": "Description (optionnel)",
+    "resolution": "Résolution",
+    "startSession": "Démarrer la session",
+    "setDecision": "Rendre la décision",
+    "decisionRationale": "Motif de la décision",
+    "awardedBid": "Offre adjugée",
+    "selectAwardedBid": "— Sélectionner l'offre adjugée —",
+    "additionalNotes": "Notes supplémentaires (optionnel)",
+    "decisions": {
+      "ADMIS": "Admis",
+      "NON_ADMIS": "Non admis",
+      "ADJUGE": "Adjugé",
+      "INFRUCTUEUX": "Infructueux",
+      "REPORT": "Report"
+    },
+    "generatePv": "Générer le PV",
+    "pvGenerated": "PV généré et scellé",
+    "pvHash": "Empreinte SHA-256",
+    "pvCopyHash": "Copier",
+    "viewPv": "Voir le PV",
+    "endSession": "Clôturer la session",
+    "endSessionHint": "La décision doit être rendue avant la clôture.",
+    "votes": "Votes",
+    "castVote": "Voter",
+    "voteSubjectType": "Type de sujet",
+    "voteSubjectTypes": {
+      "bid": "Offre",
+      "bid_opening": "Ouverture des plis",
+      "other": "Autre"
+    },
+    "voteSubjectId": "Identifiant du sujet",
+    "vote": "Vote",
+    "voteOptions": {
+      "POUR": "Pour",
+      "CONTRE": "Contre",
+      "ABSTENTION": "Abstention",
+      "RESERVE": "Réserve"
+    },
+    "reservation": "Réserve",
+    "reservationRequired": "Commentaire de réserve obligatoire",
+    "reservationPlaceholder": "Commentaire de réserve (obligatoire)..."
   }
 }

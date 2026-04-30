@@ -495,5 +495,99 @@
         "totalValue": "Total value"
       }
     }
+  },
+  "ccc": {
+    "title": "Procurement Control Commission",
+    "subtitle": "CCC meetings, collegial voting and decisions",
+    "scheduleMeeting": "Schedule a meeting",
+    "scheduleSubtitle": "Plan a Procurement Control Commission session",
+    "meetingNumber": "Meeting #",
+    "subject": "Subject",
+    "subjectPlaceholder": "Technical evaluation — Contract XYZ",
+    "project": "Project",
+    "selectProject": "— Select a project —",
+    "eligibleStatusesHint": "Eligible projects: in reception, opening or evaluation phase.",
+    "scheduledAt": "Date and time",
+    "location": "Location",
+    "locationPlaceholder": "Meeting room B3",
+    "phase": "Phase",
+    "phases": {
+      "TECHNICAL": "Technical",
+      "COMMERCIAL": "Commercial"
+    },
+    "quorum": "Quorum",
+    "quorumRequired": "Required quorum",
+    "quorumHint": "Minimum 3 members present to open the session.",
+    "quorumNotMet": "Quorum not met",
+    "state": "State",
+    "decision": "Decision",
+    "searchPlaceholder": "Search by subject or project reference...",
+    "meetingsCount": "meetings",
+    "sessionState": "Session state",
+    "sessionStates": {
+      "scheduled": "Scheduled",
+      "inSession": "In session",
+      "closed": "Closed"
+    },
+    "sessionControl": "Session control",
+    "stats": {
+      "total": "Total",
+      "scheduled": "Scheduled",
+      "inSession": "In session",
+      "decided": "Decided",
+      "closed": "Closed"
+    },
+    "members": "Members",
+    "addMember": "Add",
+    "selectMember": "Select a user",
+    "memberRole": "Role (e.g. Chair, Member, Rapporteur)",
+    "present": "Present",
+    "absent": "Absent",
+    "removeMember": "Remove",
+    "agenda": "Agenda",
+    "agendaItem": "Item",
+    "addAgendaItem": "Add item",
+    "agendaTitle": "Item title",
+    "agendaDescription": "Description (optional)",
+    "resolution": "Resolution",
+    "startSession": "Start session",
+    "setDecision": "Set decision",
+    "decisionRationale": "Decision rationale",
+    "awardedBid": "Awarded bid",
+    "selectAwardedBid": "— Select the awarded bid —",
+    "additionalNotes": "Additional notes (optional)",
+    "decisions": {
+      "ADMIS": "Admitted",
+      "NON_ADMIS": "Not admitted",
+      "ADJUGE": "Awarded",
+      "INFRUCTUEUX": "Unsuccessful",
+      "REPORT": "Deferred"
+    },
+    "generatePv": "Generate minutes",
+    "pvGenerated": "Minutes generated and sealed",
+    "pvHash": "SHA-256 hash",
+    "pvCopyHash": "Copy",
+    "viewPv": "View minutes",
+    "endSession": "End session",
+    "endSessionHint": "A decision must be set before closing.",
+    "votes": "Votes",
+    "castVote": "Cast vote",
+    "voteSubjectType": "Subject type",
+    "voteSubjectTypes": {
+      "bid": "Bid",
+      "bid_opening": "Bid opening",
+      "other": "Other"
+    },
+    "voteSubjectId": "Subject ID",
+    "vote": "Vote",
+    "voteOptions": {
+      "POUR": "For",
+      "CONTRE": "Against",
+      "ABSTENTION": "Abstention",
+      "RESERVE": "Reserve"
+    },
+    "reservation": "Reservation",
+    "reservationRequired": "Reservation comment required",
+    "reservationPlaceholder": "Reservation comment (required)..."
   }
 }

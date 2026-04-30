@@ -17,6 +17,9 @@ import ContractList from './pages/contracts/ContractList';
 import ContractForm from './pages/contracts/ContractForm';
 import ContractDetail from './pages/contracts/ContractDetail';
 import AvenantBuilder from './pages/contracts/AvenantBuilder';
+import CCCList from './pages/ccc/CCCList';
+import CCCForm from './pages/ccc/CCCForm';
+import CCCDetail from './pages/ccc/CCCDetail';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -49,8 +52,11 @@ export default function App() {
         <Route path="contracts/new" element={<ContractForm />} />
         <Route path="contracts/:id" element={<ContractDetail />} />
         <Route path="contracts/:id/avenants/new" element={<AvenantBuilder />} />
+        {/* Phase 5: CCC Commission & Evaluation */}
+        <Route path="ccc" element={<CCCList />} />
+        <Route path="ccc/new" element={<CCCForm />} />
+        <Route path="ccc/:id" element={<CCCDetail />} />
         {/* Future phase routes - placeholders */}
-        <Route path="ccc" element={<PlaceholderPage title="CCC" />} />
         <Route path="avenants" element={<PlaceholderPage title="Avenants" />} />
         <Route path="roles" element={<PlaceholderPage title="Roles & Permissions" />} />
         <Route path="audit" element={<PlaceholderPage title="Audit Trail" />} />

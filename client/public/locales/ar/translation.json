@@ -495,5 +495,99 @@
         "totalValue": "القيمة الإجمالية"
       }
     }
+  },
+  "ccc": {
+    "title": "لجنة مراقبة الصفقات",
+    "subtitle": "اجتماعات اللجنة والتصويت الجماعي والقرارات",
+    "scheduleMeeting": "برمجة اجتماع",
+    "scheduleSubtitle": "تخطيط جلسة لجنة مراقبة الصفقات",
+    "meetingNumber": "الاجتماع رقم",
+    "subject": "الموضوع",
+    "subjectPlaceholder": "التقييم التقني — الصفقة XYZ",
+    "project": "المشروع",
+    "selectProject": "— اختيار مشروع —",
+    "eligibleStatusesHint": "المشاريع المؤهلة: في مرحلة الاستقبال أو الفتح أو التقييم.",
+    "scheduledAt": "التاريخ والوقت",
+    "location": "المكان",
+    "locationPlaceholder": "قاعة الاجتماعات B3",
+    "phase": "المرحلة",
+    "phases": {
+      "TECHNICAL": "تقنية",
+      "COMMERCIAL": "تجارية"
+    },
+    "quorum": "النصاب",
+    "quorumRequired": "النصاب المطلوب",
+    "quorumHint": "الحد الأدنى 3 أعضاء حاضرين لافتتاح الجلسة.",
+    "quorumNotMet": "النصاب غير مكتمل",
+    "state": "الحالة",
+    "decision": "القرار",
+    "searchPlaceholder": "البحث بالموضوع أو مرجع المشروع...",
+    "meetingsCount": "اجتماعات",
+    "sessionState": "حالة الجلسة",
+    "sessionStates": {
+      "scheduled": "مبرمجة",
+      "inSession": "قيد الانعقاد",
+      "closed": "مغلقة"
+    },
+    "sessionControl": "التحكم في الجلسة",
+    "stats": {
+      "total": "الإجمالي",
+      "scheduled": "مبرمجة",
+      "inSession": "قيد الانعقاد",
+      "decided": "تم البت فيها",
+      "closed": "مغلقة"
+    },
+    "members": "الأعضاء",
+    "addMember": "إضافة",
+    "selectMember": "اختيار مستخدم",
+    "memberRole": "الدور (مثال: رئيس، عضو، مقرر)",
+    "present": "حاضر",
+    "absent": "غائب",
+    "removeMember": "إزالة",
+    "agenda": "جدول الأعمال",
+    "agendaItem": "نقطة",
+    "addAgendaItem": "إضافة نقطة",
+    "agendaTitle": "عنوان النقطة",
+    "agendaDescription": "الوصف (اختياري)",
+    "resolution": "القرار",
+    "startSession": "بدء الجلسة",
+    "setDecision": "إصدار القرار",
+    "decisionRationale": "مبررات القرار",
+    "awardedBid": "العرض المرسى عليه",
+    "selectAwardedBid": "— اختيار العرض المرسى عليه —",
+    "additionalNotes": "ملاحظات إضافية (اختياري)",
+    "decisions": {
+      "ADMIS": "مقبول",
+      "NON_ADMIS": "غير مقبول",
+      "ADJUGE": "مرسى",
+      "INFRUCTUEUX": "غير مثمر",
+      "REPORT": "مؤجل"
+    },
+    "generatePv": "إنشاء المحضر",
+    "pvGenerated": "تم إنشاء المحضر وختمه",
+    "pvHash": "بصمة SHA-256",
+    "pvCopyHash": "نسخ",
+    "viewPv": "عرض المحضر",
+    "endSession": "إغلاق الجلسة",
+    "endSessionHint": "يجب إصدار القرار قبل الإغلاق.",
+    "votes": "التصويت",
+    "castVote": "تصويت",
+    "voteSubjectType": "نوع الموضوع",
+    "voteSubjectTypes": {
+      "bid": "عرض",
+      "bid_opening": "فتح الأظرفة",
+      "other": "أخرى"
+    },
+    "voteSubjectId": "معرف الموضوع",
+    "vote": "صوت",
+    "voteOptions": {
+      "POUR": "مع",
+      "CONTRE": "ضد",
+      "ABSTENTION": "امتناع",
+      "RESERVE": "تحفظ"
+    },
+    "reservation": "تحفظ",
+    "reservationRequired": "تعليق التحفظ إلزامي",
+    "reservationPlaceholder": "تعليق التحفظ (إلزامي)..."
   }
 }
