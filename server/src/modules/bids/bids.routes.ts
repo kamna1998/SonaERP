@@ -70,6 +70,12 @@ router.post(
 // ============================================================
 // Status transitions (evaluation outcomes, withdrawal)
 // ============================================================
+router.post(
+  '/:id/evaluations',
+  authorize(PERMISSIONS.BID_EVALUATE_TECHNICAL, PERMISSIONS.BID_EVALUATE_COMMERCIAL),
+  bidsController.recordEvaluations
+);
+
 router.patch(
   '/:id/status',
   authorize(

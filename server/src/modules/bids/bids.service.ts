@@ -517,3 +517,111 @@ export async function getBidsByProject(projectId: string, userRoles: string[]) {
     meta: { allowedVaults: getAllowedVaults(userRoles) },
   };
 }
+
+// ============================================================
+// BID EVALUATIONS (Phase 5 — CCC & Evaluation)
+// ============================================================
+export async function recordEvaluations(
+  bidId: string,
+  evaluations: Array<{
+    criterionCode: string;
+    criterionLabel: string;
+    maxScore: number;
+    givenScore: number;
+    envelopeType: 'TECHNICAL' | 'COMMERCIAL';
+    justification?: string;
+  }>,
+  evaluatorId: string,
+) {
+  const bid = await prisma.bid.findUnique({ where: { id: bidId } });
+  if (!bid) throw new NotFoundError('Bid', bidId);
+
+  const created = await prisma.$transaction(async (tx) => {
+    const results = [];
+    for (const ev of evaluations) {
+      if (ev.givenScore > ev.maxScore) {
+        throw new ValidationError(`Score ${ev.givenScore} exceeds max ${ev.maxScore} for ${ev.criterionCode}`);
+      }
+      const result = await tx.bidEvaluation.upsert({
+        where: {
+          bidId_evaluatorId_criterionCode: { bidId, evaluatorId, criterionCode: ev.criterionCode },
+        },
+        create: {
+          bidId,
+          evaluatorId,
+          envelopeType: ev.envelopeType as BidEnvelopeType,
+          criterionCode: ev.criterionCode,
+          criterionLabel: ev.criterionLabel,
+          maxScore: new Prisma.Decimal(ev.maxScore),
+          givenScore: new Prisma.Decimal(ev.givenScore),
+          justification: ev.justification,
+        },
+        update: {
+          givenScore: new Prisma.Decimal(ev.givenScore),
+          justification: ev.justification,
+          evaluatedAt: new Date(),
+        },
+      });
+      results.push(result);
+    }
+    return results;
+  });
+
+  await recomputeBidScore(bidId);
+  await rerankProjectBids(bid.projectId);
+
+  return created;
+}
+
+async function recomputeBidScore(bidId: string) {
+  const evaluations = await prisma.bidEvaluation.findMany({ where: { bidId } });
+
+  const technical = evaluations.filter((e) => e.envelopeType === 'TECHNICAL');
+  const commercial = evaluations.filter((e) => e.envelopeType === 'COMMERCIAL');
+
+  let techScore: number | null = null;
+  let commScore: number | null = null;
+
+  if (technical.length > 0) {
+    const totalMax = technical.reduce((s, e) => s + e.maxScore.toNumber(), 0);
+    const totalGiven = technical.reduce((s, e) => s + e.givenScore.toNumber(), 0);
+    techScore = totalMax > 0 ? (totalGiven / totalMax) * 100 : 0;
+  }
+
+  if (commercial.length > 0) {
+    const totalMax = commercial.reduce((s, e) => s + e.maxScore.toNumber(), 0);
+    const totalGiven = commercial.reduce((s, e) => s + e.givenScore.toNumber(), 0);
+    commScore = totalMax > 0 ? (totalGiven / totalMax) * 100 : 0;
+  }
+
+  const composite = techScore !== null && commScore !== null
+    ? 0.6 * techScore + 0.4 * commScore
+    : techScore ?? commScore ?? null;
+
+  await prisma.bid.update({
+    where: { id: bidId },
+    data: {
+      technicalScore: techScore !== null ? new Prisma.Decimal(Math.round(techScore * 100) / 100) : null,
+      commercialScore: commScore !== null ? new Prisma.Decimal(Math.round(commScore * 100) / 100) : null,
+      compositeScore: composite !== null ? new Prisma.Decimal(Math.round(composite * 100) / 100) : null,
+    },
+  });
+}
+
+async function rerankProjectBids(projectId: string) {
+  const bids = await prisma.bid.findMany({
+    where: {
+      projectId,
+      compositeScore: { not: null },
+      status: { notIn: ['WITHDRAWN', 'REJECTED', 'TECHNICALLY_NON_COMPLIANT'] },
+    },
+    orderBy: { compositeScore: 'desc' },
+  });
+
+  for (let i = 0; i < bids.length; i++) {
+    await prisma.bid.update({
+      where: { id: bids[i].id },
+      data: { rank: i + 1 },
+    });
+  }
+}

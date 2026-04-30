@@ -74,3 +74,14 @@ export async function getBidsByProject(req: Request, res: Response, next: NextFu
     res.json(result);
   } catch (err) { next(err); }
 }
+
+export async function recordEvaluations(req: Request, res: Response, next: NextFunction) {
+  try {
+    const result = await bidsService.recordEvaluations(
+      req.params.id,
+      req.body.evaluations,
+      req.user!.id,
+    );
+    res.json(result);
+  } catch (err) { next(err); }
+}
